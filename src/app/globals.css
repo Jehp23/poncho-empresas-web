@@ -1,26 +1,158 @@
 @import "tailwindcss";
 
+/* ── Poncho Empresas — Design tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --pe-bg: #f4f7f5;
+  --pe-surface: #ffffff;
+  --pe-surface-muted: #eef3f1;
+  --pe-border: rgba(26, 46, 40, 0.1);
+  --pe-border-strong: rgba(26, 46, 40, 0.16);
+  --pe-ink: #142820;
+  --pe-muted: #4a6359;
+  --pe-faint: #7a9489;
+  --pe-primary: #1f5c47;
+  --pe-primary-hover: #184a39;
+  --pe-primary-soft: #dceee6;
+  --pe-primary-glow: rgba(31, 92, 71, 0.22);
+  --pe-accent: #f4a300;
+  --pe-accent-hover: #e09400;
+  --pe-accent-soft: #fff3d4;
+  --pe-accent-glow: rgba(244, 163, 0, 0.28);
+  --pe-success: #168a5a;
+  --pe-success-soft: #dcf5ea;
+  --pe-warning: #c47a0a;
+  --pe-warning-soft: #fff0d6;
+  --pe-danger: #c0392b;
+  --pe-danger-soft: #fde8e5;
+  --pe-hero-from: #153d30;
+  --pe-hero-via: #1f5c47;
+  --pe-hero-to: #2a7558;
+  --pe-radius-sm: 0.5rem;
+  --pe-radius-card: 1rem;
+  --pe-radius-xl: 1.25rem;
+  --pe-shadow-sm: 0 1px 2px rgba(26, 46, 40, 0.05);
+  --pe-shadow-card: 0 1px 3px rgba(26, 46, 40, 0.06), 0 10px 28px rgba(31, 92, 71, 0.07);
+  --pe-shadow-hover: 0 8px 28px rgba(31, 92, 71, 0.12);
+  --pe-shadow-hero: 0 12px 40px rgba(21, 61, 48, 0.35);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-background: var(--pe-bg);
+  --color-foreground: var(--pe-ink);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-poncho);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-bg: var(--pe-bg);
+  --color-surface: var(--pe-surface);
+  --color-surface-muted: var(--pe-surface-muted);
+  --color-border-subtle: var(--pe-border);
+  --color-border-strong: var(--pe-border-strong);
+  --color-ink: var(--pe-ink);
+  --color-muted: var(--pe-muted);
+  --color-faint: var(--pe-faint);
+  --color-primary: var(--pe-primary);
+  --color-primary-hover: var(--pe-primary-hover);
+  --color-primary-soft: var(--pe-primary-soft);
+  --color-accent: var(--pe-accent);
+  --color-accent-hover: var(--pe-accent-hover);
+  --color-accent-soft: var(--pe-accent-soft);
+  --color-success: var(--pe-success);
+  --color-success-soft: var(--pe-success-soft);
+  --color-warning: var(--pe-warning);
+  --color-warning-soft: var(--pe-warning-soft);
+  --color-danger: var(--pe-danger);
+  --color-danger-soft: var(--pe-danger-soft);
+
+  --radius-sm: var(--pe-radius-sm);
+  --radius-card: var(--pe-radius-card);
+  --radius-xl: var(--pe-radius-xl);
+  --shadow-sm: var(--pe-shadow-sm);
+  --shadow-card: var(--pe-shadow-card);
+  --shadow-hover: var(--pe-shadow-hover);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--pe-bg);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 8% -8%, rgba(31, 92, 71, 0.11), transparent 55%),
+    radial-gradient(ellipse 70% 45% at 98% 5%, rgba(244, 163, 0, 0.09), transparent 50%),
+    radial-gradient(ellipse 60% 35% at 50% 105%, rgba(31, 92, 71, 0.07), transparent 45%);
+  background-attachment: fixed;
+  color: var(--pe-ink);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-poncho {
+  font-family: var(--font-poncho), "Montserrat", system-ui, sans-serif;
+}
+
+.text-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--pe-primary);
+  opacity: 0.75;
+}
+
+.text-section-title {
+  font-family: var(--font-poncho), "Montserrat", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--pe-ink);
+}
+
+.gradient-primary {
+  background: linear-gradient(135deg, var(--pe-primary) 0%, var(--pe-hero-to) 100%);
+}
+
+.gradient-hero {
+  background: linear-gradient(
+    145deg,
+    var(--pe-hero-from) 0%,
+    var(--pe-hero-via) 45%,
+    var(--pe-hero-to) 100%
+  );
+}
+
+.gradient-accent-bar {
+  background: linear-gradient(90deg, var(--pe-accent) 0%, #ffc94d 100%);
+}
+
+.card-tone-primary {
+  border-color: rgba(31, 92, 71, 0.18);
+  background: linear-gradient(160deg, rgba(220, 238, 230, 0.65) 0%, var(--pe-surface) 55%);
+}
+
+.card-tone-accent {
+  border-color: rgba(244, 163, 0, 0.25);
+  background: linear-gradient(160deg, rgba(255, 243, 212, 0.7) 0%, var(--pe-surface) 55%);
+}
+
+.card-tone-danger {
+  border-color: rgba(192, 57, 43, 0.18);
+  background: linear-gradient(160deg, rgba(253, 232, 229, 0.75) 0%, var(--pe-surface) 55%);
+}
+
+.card-tone-success {
+  border-color: rgba(22, 138, 90, 0.18);
+  background: linear-gradient(160deg, rgba(220, 245, 234, 0.75) 0%, var(--pe-surface) 55%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--pe-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

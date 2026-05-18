@@ -1,0 +1,46 @@
+schema: spec-driven
+
+context: |
+  Product: Poncho Empresas — B2B fintech PYMEs (treasury, eCheqs, FCI, cashflow, IA consolidation, SGR financing).
+  Frontend: Next.js 16 App Router, React 19, TS strict, Tailwind v4, Montserrat+Inter.
+  Architecture: src/features/{shell,home,financiamiento}/ + src/shared/{ui,lib,types,infrastructure}; thin app routes.
+  Planned: Spring Boot API, PostgreSQL+Flyway, Auth0/Keycloak, FastAPI IA, Docker→K8s.
+  Style: ESLint next, premium minimal Mercury-inspired tokens in globals.css.
+
+strict_tdd: false
+
+testing:
+  strict_tdd: false
+  runner: null
+  layers:
+    unit: false
+    integration: false
+    e2e: false
+  coverage: false
+  quality:
+    linter: "npm run lint"
+    typecheck: "npx tsc --noEmit"
+    formatter: null
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected feature modules (shell, home, financiamiento, shared)
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Include sequence diagrams for complex flows
+    - Document architecture decisions with rationale
+  tasks:
+    - Group tasks by phase (infrastructure, implementation, testing)
+    - Use hierarchical numbering (1.1, 1.2, etc.)
+    - Keep tasks small enough to complete in one session
+  apply:
+    - Follow feature-module layout and existing design tokens
+    - Read node_modules/next/dist/docs/ before Next.js API changes (AGENTS.md)
+  verify:
+    - Run npm run build and npx tsc --noEmit
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)

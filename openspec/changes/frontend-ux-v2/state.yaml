@@ -1,0 +1,9 @@
+change: frontend-ux-v2
+phase: apply
+artifact_store: hybrid
+artifacts:
+  proposal: true
+  specs: false
+  design: true
+  tasks: false
+last_updated: "2026-05-18"
