@@ -1,46 +1,42 @@
 @import "tailwindcss";
 
-/* ── Poncho Empresas — Design tokens ── */
+/* ── Poncho Empresas — Mercury-inspired tokens (brief CEO) ── */
 :root {
-  --pe-bg: #f4f7f5;
+  --pe-bg: #fdf6ec;
   --pe-surface: #ffffff;
-  --pe-surface-muted: #eef3f1;
-  --pe-border: rgba(26, 46, 40, 0.1);
-  --pe-border-strong: rgba(26, 46, 40, 0.16);
-  --pe-ink: #142820;
-  --pe-muted: #4a6359;
-  --pe-faint: #7a9489;
+  --pe-surface-muted: #f8f4ef;
+  --pe-border: rgba(26, 46, 40, 0.08);
+  --pe-border-strong: rgba(26, 46, 40, 0.14);
+  --pe-ink: #1a2e28;
+  --pe-muted: #5f6f6a;
+  --pe-faint: #9aa8a3;
   --pe-primary: #1f5c47;
   --pe-primary-hover: #184a39;
-  --pe-primary-soft: #dceee6;
-  --pe-primary-glow: rgba(31, 92, 71, 0.22);
+  --pe-primary-soft: rgba(31, 92, 71, 0.08);
   --pe-accent: #f4a300;
   --pe-accent-hover: #e09400;
-  --pe-accent-soft: #fff3d4;
-  --pe-accent-glow: rgba(244, 163, 0, 0.28);
-  --pe-success: #168a5a;
-  --pe-success-soft: #dcf5ea;
-  --pe-warning: #c47a0a;
-  --pe-warning-soft: #fff0d6;
+  --pe-accent-soft: #fef8eb;
+  --pe-success: #1f5c47;
+  --pe-success-soft: #eef5f2;
+  --pe-warning: #b45309;
+  --pe-warning-soft: #fef6eb;
   --pe-danger: #c0392b;
-  --pe-danger-soft: #fde8e5;
-  --pe-hero-from: #153d30;
-  --pe-hero-via: #1f5c47;
-  --pe-hero-to: #2a7558;
+  --pe-danger-soft: #fdf0ee;
+  --pe-ai: #6366f1;
+  --pe-ai-soft: #eef2ff;
   --pe-radius-sm: 0.5rem;
-  --pe-radius-card: 1rem;
-  --pe-radius-xl: 1.25rem;
-  --pe-shadow-sm: 0 1px 2px rgba(26, 46, 40, 0.05);
-  --pe-shadow-card: 0 1px 3px rgba(26, 46, 40, 0.06), 0 10px 28px rgba(31, 92, 71, 0.07);
-  --pe-shadow-hover: 0 8px 28px rgba(31, 92, 71, 0.12);
-  --pe-shadow-hero: 0 12px 40px rgba(21, 61, 48, 0.35);
+  --pe-radius-card: 0.75rem;
+  --pe-radius-xl: 1rem;
+  --pe-shadow-sm: 0 1px 2px rgba(26, 46, 40, 0.04);
+  --pe-shadow-card: 0 1px 3px rgba(26, 46, 40, 0.05), 0 4px 16px rgba(26, 46, 40, 0.04);
+  --pe-shadow-hover: 0 4px 20px rgba(26, 46, 40, 0.08);
 }
 
 @theme inline {
   --color-background: var(--pe-bg);
   --color-foreground: var(--pe-ink);
   --font-sans: var(--font-inter);
-  --font-display: var(--font-poncho);
+  --font-display: var(--font-display);
 
   --color-bg: var(--pe-bg);
   --color-surface: var(--pe-surface);
@@ -62,6 +58,8 @@
   --color-warning-soft: var(--pe-warning-soft);
   --color-danger: var(--pe-danger);
   --color-danger-soft: var(--pe-danger-soft);
+  --color-ai: var(--pe-ai);
+  --color-ai-soft: var(--pe-ai-soft);
 
   --radius-sm: var(--pe-radius-sm);
   --radius-card: var(--pe-radius-card);
@@ -72,12 +70,7 @@
 }
 
 body {
-  background-color: var(--pe-bg);
-  background-image:
-    radial-gradient(ellipse 90% 55% at 8% -8%, rgba(31, 92, 71, 0.11), transparent 55%),
-    radial-gradient(ellipse 70% 45% at 98% 5%, rgba(244, 163, 0, 0.09), transparent 50%),
-    radial-gradient(ellipse 60% 35% at 50% 105%, rgba(31, 92, 71, 0.07), transparent 45%);
-  background-attachment: fixed;
+  background: var(--pe-bg);
   color: var(--pe-ink);
   font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 0.9375rem;
@@ -86,61 +79,23 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.font-poncho {
-  font-family: var(--font-poncho), "Montserrat", system-ui, sans-serif;
+.font-display {
+  font-family: var(--font-display), "Poppins", system-ui, sans-serif;
 }
 
 .text-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.07em;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--pe-primary);
-  opacity: 0.75;
+  color: var(--pe-faint);
 }
 
 .text-section-title {
-  font-family: var(--font-poncho), "Montserrat", system-ui, sans-serif;
+  font-family: var(--font-display), "Poppins", system-ui, sans-serif;
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--pe-ink);
-}
-
-.gradient-primary {
-  background: linear-gradient(135deg, var(--pe-primary) 0%, var(--pe-hero-to) 100%);
-}
-
-.gradient-hero {
-  background: linear-gradient(
-    145deg,
-    var(--pe-hero-from) 0%,
-    var(--pe-hero-via) 45%,
-    var(--pe-hero-to) 100%
-  );
-}
-
-.gradient-accent-bar {
-  background: linear-gradient(90deg, var(--pe-accent) 0%, #ffc94d 100%);
-}
-
-.card-tone-primary {
-  border-color: rgba(31, 92, 71, 0.18);
-  background: linear-gradient(160deg, rgba(220, 238, 230, 0.65) 0%, var(--pe-surface) 55%);
-}
-
-.card-tone-accent {
-  border-color: rgba(244, 163, 0, 0.25);
-  background: linear-gradient(160deg, rgba(255, 243, 212, 0.7) 0%, var(--pe-surface) 55%);
-}
-
-.card-tone-danger {
-  border-color: rgba(192, 57, 43, 0.18);
-  background: linear-gradient(160deg, rgba(253, 232, 229, 0.75) 0%, var(--pe-surface) 55%);
-}
-
-.card-tone-success {
-  border-color: rgba(22, 138, 90, 0.18);
-  background: linear-gradient(160deg, rgba(220, 245, 234, 0.75) 0%, var(--pe-surface) 55%);
 }
 
 :focus-visible {

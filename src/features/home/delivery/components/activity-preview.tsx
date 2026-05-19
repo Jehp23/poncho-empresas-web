@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 import type { ActividadReciente, EstadoActividad } from "@/shared/types/app";
 import { Badge } from "@/shared/ui/badge";
-import { Card } from "@/shared/ui/card";
 import { IconBox } from "@/shared/ui/icon-box";
 import { SectionHeader } from "@/shared/ui/section-header";
+import { DashboardCard } from "@/shared/ui/dashboard-card";
 import { formatMonto } from "@/shared/lib/format";
 import { cn } from "@/shared/lib/cn";
 
@@ -31,11 +31,19 @@ const estadoVariant: Record<
 };
 
 const estadoLabel: Record<EstadoActividad, string> = {
-  completado: "Completado",
-  pendiente: "Pendiente",
-  en_revision: "En revisión",
-  requiere_atencion: "Atención",
+  completado: "Completed",
+  pendiente: "Pending",
+  en_revision: "In review",
+  requiere_atencion: "Needs attention",
 };
+
+const FILTERS = [
+  { id: "all", label: "Todos" },
+  { id: "transferencia", label: "Transferencias" },
+  { id: "deposito", label: "Depósitos" },
+  { id: "echeq", label: "eCheqs" },
+  { id: "inversion", label: "Inversiones" },
+] as const;
 
 export function ActivityPreview({
   items,
@@ -45,23 +53,38 @@ export function ActivityPreview({
   limit?: number;
 }) {
   return (
-    <Card padding="none" className="overflow-hidden">
-      <div className="border-b border-border-subtle px-6 py-4">
+    <DashboardCard padding="none" className="overflow-hidden">
+      <div className="border-b border-border-subtle px-5 py-4 sm:px-6">
         <SectionHeader
           title="Actividad reciente"
-          href="/operar?tab=movimientos"
+          href="/movimientos"
           linkLabel="Ver historial"
-          className="mb-0"
+          className="mb-3"
         />
+        <div className="flex gap-2 overflow-x-auto pb-0.5">
+          {FILTERS.map((f, i) => (
+            <span
+              key={f.id}
+              className={cn(
+                "shrink-0 rounded-full px-3 py-1 text-xs font-medium",
+                i === 0
+                  ? "bg-primary-soft text-primary"
+                  : "bg-surface-muted text-muted",
+              )}
+            >
+              {f.label}
+            </span>
+          ))}
+        </div>
       </div>
-      <ul>
+      <ul className="min-w-0">
         {items.slice(0, limit).map((item, i) => {
           const cfg = tipoConfig[item.tipo];
           return (
             <li
               key={item.id}
               className={cn(
-                "flex items-center gap-4 px-6 py-4 transition-colors hover:bg-surface-muted/40",
+                "flex min-w-0 items-center gap-3 px-5 py-4 sm:gap-4 sm:px-6",
                 i > 0 && "border-t border-border-subtle",
               )}
             >
@@ -70,21 +93,21 @@ export function ActivityPreview({
                 <p className="truncate text-sm font-medium text-ink">
                   {item.descripcion}
                 </p>
-                <p className="text-xs text-faint">
+                <p className="truncate text-xs text-faint">
                   {cfg.label} · {item.fecha}
                 </p>
               </div>
-              <div className="flex shrink-0 flex-col items-end gap-1">
+              <div className="flex w-[5.5rem] shrink-0 flex-col items-end gap-1 sm:w-auto">
                 <p
                   className={cn(
-                    "text-sm font-semibold tabular-nums",
+                    "max-w-full truncate text-xs font-semibold tabular-nums sm:text-sm",
                     item.esEgreso ? "text-ink" : "text-success",
                   )}
                 >
                   {item.esEgreso ? "−" : "+"}
                   {formatMonto(item.monto)}
                 </p>
-                <Badge variant={estadoVariant[item.estado]}>
+                <Badge variant={estadoVariant[item.estado]} className="max-w-full truncate">
                   {estadoLabel[item.estado]}
                 </Badge>
               </div>
@@ -93,15 +116,15 @@ export function ActivityPreview({
         })}
       </ul>
       {items.length > limit && (
-        <div className="border-t border-border-subtle px-6 py-3">
+        <div className="border-t border-border-subtle px-5 py-3 sm:px-6">
           <Link
-            href="/operar?tab=movimientos"
+            href="/movimientos"
             className="text-sm font-medium text-primary hover:underline"
           >
             Ver toda la actividad
           </Link>
         </div>
       )}
-    </Card>
+    </DashboardCard>
   );
 }

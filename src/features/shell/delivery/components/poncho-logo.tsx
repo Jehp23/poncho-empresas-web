@@ -25,7 +25,7 @@ export function PonchoLogo({
       />
       {!collapsed && (
         <span
-          className="font-poncho text-[1.0625rem] font-semibold leading-none tracking-tight text-[#2a2a2b]"
+          className="font-display text-[1.0625rem] font-semibold leading-none tracking-tight text-[#2a2a2b]"
           aria-hidden
         >
           Poncho

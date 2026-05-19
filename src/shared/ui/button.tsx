@@ -5,11 +5,11 @@ export type ButtonVariant = "primary" | "secondary" | "accent" | "ghost";
 
 const variantMap: Record<ButtonVariant, string> = {
   primary:
-    "gradient-primary text-white shadow-[0_4px_14px_var(--pe-primary-glow)] hover:brightness-110 active:scale-[0.98]",
+    "bg-primary text-white shadow-sm hover:bg-primary-hover active:scale-[0.98]",
   secondary:
-    "border border-primary/20 bg-surface text-primary shadow-sm hover:bg-primary-soft active:scale-[0.98]",
+    "border border-border-subtle bg-surface text-ink shadow-sm hover:bg-surface-muted active:scale-[0.98]",
   accent:
-    "bg-accent text-ink shadow-[0_4px_14px_var(--pe-accent-glow)] hover:bg-accent-hover active:scale-[0.98]",
+    "bg-accent text-ink shadow-sm hover:bg-accent-hover active:scale-[0.98]",
   ghost: "text-muted hover:bg-surface-muted hover:text-ink",
 };
 

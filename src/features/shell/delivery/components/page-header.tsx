@@ -1,6 +1,16 @@
 "use client";
 
-import { Bell, ChevronDown, FileText, ArrowDownToLine, ArrowLeftRight } from "lucide-react";
+import {
+  ArrowDownToLine,
+  ArrowLeftRight,
+  Bell,
+  ChevronDown,
+  FileText,
+  Plus,
+  Receipt,
+  Send,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useEmpresa } from "@/features/shell/delivery/empresa-provider";
@@ -14,13 +24,19 @@ type PageHeaderProps = {
   subtitulo?: string;
 };
 
-function fechaHoy(): string {
-  return new Intl.DateTimeFormat("es-AR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-  }).format(new Date());
-}
+const QUICK_ACTIONS: Array<{
+  label: string;
+  href: string;
+  icon: typeof Send;
+  primary?: boolean;
+}> = [
+  { label: "Transferir", href: "/transferencias", icon: Send, primary: true },
+  { label: "Depositar", href: "/depositos", icon: Plus },
+  { label: "Transferir eCheq", href: "/echeqs?tab=emitidos", icon: ArrowLeftRight },
+  { label: "Depositar eCheq", href: "/echeqs?tab=recibidos", icon: FileText },
+  { label: "Pagar proveedores", href: "/transferencias", icon: Users },
+  { label: "Crear factura", href: "/depositos", icon: Receipt },
+];
 
 function CompanySwitcher() {
   const { empresa, empresas, setEmpresaId } = useEmpresa();
@@ -46,7 +62,10 @@ function CompanySwitcher() {
         aria-expanded={open}
         aria-haspopup="listbox"
       >
-        <span className="max-w-[140px] truncate font-medium text-ink sm:max-w-[200px]">
+        <span className="text-xs font-medium uppercase tracking-wider text-faint">
+          Empresa:
+        </span>
+        <span className="max-w-[140px] truncate font-semibold text-ink sm:max-w-[180px]">
           {empresa.nombre}
         </span>
         <ChevronDown className="h-4 w-4 shrink-0 text-faint" aria-hidden />
@@ -82,60 +101,72 @@ function CompanySwitcher() {
   );
 }
 
-function QuickActions() {
-  return (
-    <div className="hidden items-center gap-2 sm:flex">
-      <Link href="/operar?tab=transferir">
-        <Button variant="secondary" className="h-9 px-4 text-xs">
-          <ArrowLeftRight className="h-3.5 w-3.5" />
-          Transferir
-        </Button>
-      </Link>
-      <Link href="/operar?tab=depositar">
-        <Button variant="secondary" className="h-9 px-4 text-xs">
-          <ArrowDownToLine className="h-3.5 w-3.5" />
-          Depositar
-        </Button>
-      </Link>
-      <Link href="/echeqs">
-        <Button variant="secondary" className="h-9 px-4 text-xs">
-          <FileText className="h-3.5 w-3.5" />
-          eCheq
-        </Button>
-      </Link>
-    </div>
-  );
-}
-
 export function PageHeader({ usuario, titulo, subtitulo }: PageHeaderProps) {
   const { empresa } = useEmpresa();
 
   return (
-    <header className="mb-8 border-b border-primary/10 pb-6 pt-12 lg:pt-0">
-      <div className="gradient-accent-bar mb-6 h-1 w-16 rounded-full opacity-80" />
-      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+    <header className="mb-8 border-b border-border-subtle pb-6 pt-12 lg:pt-0">
+      <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
         <div>
-          <p className="text-label capitalize">{fechaHoy()}</p>
-          <h1 className="font-poncho mt-1 text-2xl font-semibold tracking-tight text-ink sm:text-[1.625rem]">
-            {titulo ?? empresa.nombre}
+          <h1 className="font-display text-2xl font-semibold tracking-tight text-ink sm:text-[1.625rem]">
+            {titulo ?? `Bienvenido, ${usuario.nombre}`}
           </h1>
           <p className="mt-1 text-sm text-muted">
-            {subtitulo ?? `Hola, ${usuario.nombre} — acá tenés el resumen de tu empresa.`}
+            {subtitulo ?? `Acá tenés el resumen de ${empresa.nombre} hoy.`}
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <QuickActions />
-          <CompanySwitcher />
-          <button
-            type="button"
-            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface shadow-sm transition-colors hover:bg-surface-muted"
-            aria-label="Notificaciones"
-          >
-            <Bell className="h-[18px] w-[18px] text-muted" />
-            <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-danger ring-2 ring-surface" />
-          </button>
+        <div className="flex min-w-0 flex-col items-stretch gap-3 xl:flex-row xl:items-center xl:justify-end">
+          <div className="hidden flex-wrap items-center justify-end gap-2 lg:flex">
+            {QUICK_ACTIONS.map((action) => {
+              const Icon = action.icon;
+              return (
+                <Link key={action.label} href={action.href}>
+                  <Button
+                    variant={action.primary ? "primary" : "secondary"}
+                    className="h-9 whitespace-nowrap px-3 text-xs"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                    {action.label}
+                  </Button>
+                </Link>
+              );
+            })}
+          </div>
+          <div className="flex shrink-0 items-center justify-end gap-2">
+            <CompanySwitcher />
+            <button
+              type="button"
+              className="relative flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface shadow-sm transition-colors hover:bg-surface-muted"
+              aria-label="Notificaciones"
+            >
+              <Bell className="h-[18px] w-[18px] text-muted" />
+              <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-danger ring-2 ring-surface" />
+            </button>
+          </div>
         </div>
+      </div>
+
+      {/* Mobile quick actions */}
+      <div className="mt-4 flex flex-wrap gap-2 lg:hidden">
+        <Link href="/transferencias">
+          <Button className="h-9 shrink-0 px-4 text-xs">
+            <Send className="h-3.5 w-3.5" />
+            Transferir
+          </Button>
+        </Link>
+        <Link href="/depositos">
+          <Button variant="secondary" className="h-9 shrink-0 px-4 text-xs">
+            <ArrowDownToLine className="h-3.5 w-3.5" />
+            Depositar
+          </Button>
+        </Link>
+        <Link href="/echeqs">
+          <Button variant="secondary" className="h-9 shrink-0 px-4 text-xs">
+            <FileText className="h-3.5 w-3.5" />
+            eCheq
+          </Button>
+        </Link>
       </div>
     </header>
   );

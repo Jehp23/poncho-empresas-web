@@ -18,49 +18,57 @@ const TABS = [
 
 type TabId = (typeof TABS)[number]["id"];
 
-function parseTab(tab: string | null): TabId {
-  if (tab === "transferir" || tab === "depositar") return tab;
-  return "movimientos";
+type OperateViewProps = {
+  defaultTab?: TabId;
+};
+
+function parseTab(tab: string | null, fallback: TabId): TabId {
+  if (tab === "transferir" || tab === "depositar" || tab === "movimientos") return tab;
+  return fallback;
 }
 
-export function OperateView() {
+export function OperateView({ defaultTab = "movimientos" }: OperateViewProps) {
   const data = useDashboardData();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const tab = parseTab(searchParams.get("tab"));
+  const tab = parseTab(searchParams.get("tab"), defaultTab);
 
   const setTab = useCallback(
     (id: TabId) => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (id === "movimientos") {
-        params.delete("tab");
-      } else {
-        params.set("tab", id);
-      }
-      const qs = params.toString();
-      router.push(qs ? `/operar?${qs}` : "/operar");
+      const routes: Record<TabId, string> = {
+        movimientos: "/movimientos",
+        transferir: "/transferencias",
+        depositar: "/depositos",
+      };
+      router.push(routes[id]);
     },
-    [router, searchParams],
+    [router],
   );
 
   return (
     <PageShell
       usuario={data.usuario}
-      titulo="Operar"
-      subtitulo="Movimientos, transferencias y depósitos en un solo lugar."
+      titulo={
+        defaultTab === "transferir"
+          ? "Transferencias"
+          : defaultTab === "depositar"
+            ? "Depósitos"
+            : "Movimientos"
+      }
+      subtitulo="Historial, transferencias y depósitos de tu cuenta operativa."
       ancho="completo"
     >
-      <div className="mb-6 flex gap-1 rounded-full border border-primary/15 bg-primary-soft/40 p-1">
+      <div className="mb-6 flex gap-1 rounded-full border border-border-subtle bg-surface p-1 shadow-sm">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
             className={cn(
-              "flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-all",
+              "flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
               tab === t.id
-                ? "gradient-primary text-white shadow-[0_4px_12px_var(--pe-primary-glow)]"
-                : "text-muted hover:bg-surface/80 hover:text-primary",
+                ? "bg-primary-soft text-primary"
+                : "text-muted hover:text-ink",
             )}
           >
             {t.label}

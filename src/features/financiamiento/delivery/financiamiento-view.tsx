@@ -78,7 +78,7 @@ export function WizardView({ paso }: WizardViewProps) {
       >
         <Card padding="lg" className="text-center">
           <CheckCircle2 className="mx-auto h-12 w-12 text-success" />
-          <h2 className="font-poncho mt-4 text-xl font-semibold text-ink">
+          <h2 className="font-display mt-4 text-xl font-semibold text-ink">
             Carpeta en revisión
           </h2>
           <p className="mt-2 text-sm text-muted">
@@ -388,7 +388,7 @@ export function FinanciamientoView() {
       <div className="space-y-6">
         <Card padding="lg">
           <p className="text-label">Línea de crédito</p>
-          <h2 className="font-poncho mt-2 text-xl font-semibold text-ink">
+          <h2 className="font-display mt-2 text-xl font-semibold text-ink">
             Pre-calificación vía SGR
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted">

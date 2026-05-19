@@ -2,52 +2,79 @@
 
 import { useDashboardData } from "@/features/shell/delivery/empresa-provider";
 import { PageShell } from "@/features/shell/delivery/components/page-shell";
+import { AccountsSummary } from "./components/accounts-summary";
 import { ActivityPreview } from "./components/activity-preview";
-import { AdvisorNote } from "./components/advisor-note";
 import { BalanceHero } from "./components/balance-hero";
+import { CashflowPreview } from "./components/cashflow-preview";
+import { ConsolidationCard } from "./components/consolidation-card";
+import { EcheqsSummary } from "./components/echeqs-summary";
 import { FinancingCard } from "./components/financing-card";
-import { TodayRow } from "./components/today-row";
+import { MoneyMarketCard } from "./components/money-market-card";
+import {
+  CollectionsCard,
+  PaymentsCard,
+} from "./components/payments-collections";
 
-function mostrarFinanciamiento(data: ReturnType<typeof useDashboardData>) {
-  const f = data.financiamiento;
-  if (f.estado === "no_iniciado" || f.estado === "en_progreso") return true;
-  if (f.pasoActual != null && f.pasoActual < f.pasosTotal) return true;
-  return false;
+function GridCell({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return <div className={`h-full min-h-0 ${className}`}>{children}</div>;
 }
 
 export function HomeView() {
   const data = useDashboardData();
-  const showFinancing = mostrarFinanciamiento(data);
 
   return (
     <PageShell usuario={data.usuario} ancho="completo">
       <div className="space-y-6">
-        <AdvisorNote
-          asesor={data.asesor}
-          accionHref={
-            showFinancing ? "/financiamiento/solicitud/1" : "/operar?tab=movimientos"
-          }
-          accionLabel={
-            showFinancing ? "Continuar financiamiento" : "Ver movimientos"
-          }
-        />
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+          <GridCell className="lg:col-span-8">
+            <BalanceHero
+              saldoTotal={data.saldoTotal}
+              variacionMes={data.variacionMes}
+            />
+          </GridCell>
+          <GridCell className="lg:col-span-4">
+            <AccountsSummary cuentas={data.cuentas} />
+          </GridCell>
+        </div>
 
-        <BalanceHero
-          saldoTotal={data.saldoTotal}
-          variacionMes={data.variacionMes}
-        />
+        <div className="grid auto-rows-fr gap-6 sm:grid-cols-2 xl:grid-cols-4">
+          <GridCell>
+            <EcheqsSummary echeqs={data.echeqs} />
+          </GridCell>
+          <GridCell>
+            <PaymentsCard pagos={data.proximosPagos} />
+          </GridCell>
+          <GridCell>
+            <CollectionsCard cobros={data.facturasPorCobrar} />
+          </GridCell>
+          <GridCell>
+            <MoneyMarketCard />
+          </GridCell>
+        </div>
 
-        <TodayRow
-          pagos={data.proximosPagos}
-          cobros={data.facturasPorCobrar}
-          echeqs={data.echeqs}
-        />
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+          <GridCell className="lg:col-span-7">
+            <CashflowPreview />
+          </GridCell>
+          <GridCell className="lg:col-span-5">
+            <ConsolidationCard />
+          </GridCell>
+        </div>
 
-        {showFinancing ? (
-          <FinancingCard data={data.financiamiento} />
-        ) : (
-          <ActivityPreview items={data.actividad} limit={3} />
-        )}
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-stretch">
+          <GridCell className="lg:col-span-4">
+            <FinancingCard data={data.financiamiento} />
+          </GridCell>
+          <GridCell className="lg:col-span-8">
+            <ActivityPreview items={data.actividad} />
+          </GridCell>
+        </div>
       </div>
     </PageShell>
   );

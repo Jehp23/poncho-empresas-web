@@ -27,7 +27,7 @@ export function LoginView() {
           <PonchoLogo />
         </div>
         <Card padding="lg" className="border-primary/15 shadow-hover">
-          <h1 className="font-poncho text-2xl font-semibold text-ink">
+          <h1 className="font-display text-2xl font-semibold text-ink">
             Bienvenido a Poncho Empresas
           </h1>
           <p className="mt-2 text-sm leading-relaxed text-muted">

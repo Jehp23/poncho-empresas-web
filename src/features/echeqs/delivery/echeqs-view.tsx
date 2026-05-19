@@ -54,33 +54,33 @@ export function EcheqsView() {
       ancho="completo"
     >
       <div className="mb-6 grid gap-4 sm:grid-cols-2">
-        <Card padding="md" tone="primary">
+        <Card padding="md">
           <p className="text-label">Emitidos pendientes</p>
-          <p className="font-poncho mt-1 text-2xl font-semibold text-primary">
+          <p className="font-display mt-1 text-2xl font-semibold text-primary">
             {formatMonto(data.echeqs.emitidosMonto)}
           </p>
           <p className="text-xs text-faint">{data.echeqs.emitidosPendientes} cheques</p>
         </Card>
-        <Card padding="md" tone="accent">
+        <Card padding="md">
           <p className="text-label">Recibidos por cobrar</p>
-          <p className="font-poncho mt-1 text-2xl font-semibold text-amber-900">
+          <p className="font-display mt-1 text-2xl font-semibold text-amber-900">
             {formatMonto(data.echeqs.recibidosMonto)}
           </p>
           <p className="text-xs text-faint">{data.echeqs.recibidosPorCobrar} cheques</p>
         </Card>
       </div>
 
-      <div className="mb-6 flex gap-1 rounded-full border border-primary/15 bg-primary-soft/40 p-1">
+      <div className="mb-6 flex gap-1 rounded-full border border-border-subtle bg-surface p-1 shadow-sm">
         {TABS.map((t) => (
           <button
             key={t.id}
             type="button"
             onClick={() => setTab(t.id)}
             className={cn(
-              "flex-1 rounded-full px-4 py-2 text-sm font-semibold transition-all",
+              "flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
               tab === t.id
-                ? "gradient-primary text-white shadow-[0_4px_12px_var(--pe-primary-glow)]"
-                : "text-muted hover:bg-surface/80 hover:text-primary",
+                ? "bg-primary-soft text-primary"
+                : "text-muted hover:text-ink",
             )}
           >
             {t.label}

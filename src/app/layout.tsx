@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -7,10 +7,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const montserrat = Montserrat({
-  variable: "--font-poncho",
+const poppins = Poppins({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${montserrat.variable} h-full`}>
+    <html lang="es" className={`${inter.variable} ${poppins.variable} h-full`}>
       <body className="min-h-full antialiased">{children}</body>
     </html>
   );

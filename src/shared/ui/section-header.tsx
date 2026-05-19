@@ -15,12 +15,17 @@ export function SectionHeader({
   className,
 }: SectionHeaderProps) {
   return (
-    <div className={cn("mb-4 flex items-center justify-between gap-3", className)}>
-      <h2 className="text-section-title">{title}</h2>
+    <div
+      className={cn(
+        "mb-4 flex min-w-0 items-center justify-between gap-3",
+        className,
+      )}
+    >
+      <h2 className="min-w-0 truncate text-section-title">{title}</h2>
       {href && (
         <Link
           href={href}
-          className="text-xs font-medium text-primary transition-colors hover:text-primary-hover"
+          className="shrink-0 whitespace-nowrap text-xs font-medium text-primary transition-colors hover:text-primary-hover"
         >
           {linkLabel}
         </Link>

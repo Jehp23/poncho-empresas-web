@@ -15,7 +15,7 @@ export function DepositForm() {
     return (
       <Card padding="lg" className="text-center">
         <CheckCircle2 className="mx-auto h-10 w-10 text-success" />
-        <h3 className="mt-4 font-poncho text-lg font-semibold text-ink">
+        <h3 className="mt-4 font-display text-lg font-semibold text-ink">
           Depósito registrado
         </h3>
         <p className="mt-2 text-sm text-muted">
@@ -30,7 +30,7 @@ export function DepositForm() {
 
   return (
     <Card padding="lg">
-      <h3 className="font-poncho text-lg font-semibold text-ink">Depositar</h3>
+      <h3 className="font-display text-lg font-semibold text-ink">Depositar</h3>
       <p className="mt-1 text-sm text-muted">
         Acreditá fondos en tu cuenta operativa vía transferencia bancaria.
       </p>
