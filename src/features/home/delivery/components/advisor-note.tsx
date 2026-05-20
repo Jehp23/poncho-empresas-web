@@ -56,7 +56,7 @@ export function AdvisorNote({
           <p className="mt-2 text-xs font-medium text-primary/80">{asesor.asesor}</p>
         </div>
         <Link href={accionHref} className="shrink-0">
-          <Button variant="primary" className="w-full sm:w-auto">
+          <Button variant="secondary" className="w-full sm:w-auto">
             {accionLabel}
           </Button>
         </Link>

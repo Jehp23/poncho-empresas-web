@@ -1,10 +1,5 @@
-import { Suspense } from "react";
-import { OperateView } from "@/features/operations/delivery/operate-view";
+import { redirect } from "next/navigation";
 
 export default function TransferenciasPage() {
-  return (
-    <Suspense fallback={null}>
-      <OperateView defaultTab="transferir" />
-    </Suspense>
-  );
+  redirect("/operar?tab=transferir");
 }

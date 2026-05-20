@@ -15,7 +15,7 @@ const iconMap = {
 export function AccountsPanel({ cuentas }: { cuentas: Cuenta[] }) {
   return (
     <Card padding="lg" className="flex h-full flex-col">
-      <SectionHeader title="Cuentas" linkLabel="Consolidado" />
+      <SectionHeader title="Cuentas" href="/consolidacion" linkLabel="Consolidado" />
       <ul className="flex flex-1 flex-col gap-2">
         {cuentas.map((cuenta) => {
           const Icon = iconMap[cuenta.tipo];

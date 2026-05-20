@@ -1,84 +1,154 @@
 @import "tailwindcss";
 
-/* ── Poncho Empresas — Mercury-inspired tokens (brief CEO) ── */
+/* ══════════════════════════════════════════════════════════════════════
+   Poncho Empresas — Design Tokens
+   Mercury-inspired · Reconciliado con diseño poncho-empresa.html
+
+   TABLA DE DECISIONES:
+   - pe-ink / pe-muted / pe-faint    → se mantienen (verde oscuro, más premium)
+   - pe-success                      → se mantiene como verde primary (SGR, estados)
+   - pe-success-vivid                → NUEVO: verde semáforo (#22c55e) para badges/indicadores
+   - pe-info                         → NUEVO: azul informativo (#3b82f6)
+   - pe-shadow scale                 → expandida con xs y lg
+   - pe-radius scale                 → expandida con lg (16px) y 2xl (20px)
+   - DM Sans → body; Poppins → display (sin cambio semántico, solo fuente)
+   ══════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --pe-bg: #fdf6ec;
-  --pe-surface: #ffffff;
-  --pe-surface-muted: #f8f4ef;
-  --pe-border: rgba(26, 46, 40, 0.08);
-  --pe-border-strong: rgba(26, 46, 40, 0.14);
-  --pe-ink: #1a2e28;
-  --pe-muted: #5f6f6a;
-  --pe-faint: #9aa8a3;
-  --pe-primary: #1f5c47;
-  --pe-primary-hover: #184a39;
-  --pe-primary-soft: rgba(31, 92, 71, 0.08);
-  --pe-accent: #f4a300;
-  --pe-accent-hover: #e09400;
-  --pe-accent-soft: #fef8eb;
-  --pe-success: #1f5c47;
-  --pe-success-soft: #eef5f2;
-  --pe-warning: #b45309;
-  --pe-warning-soft: #fef6eb;
-  --pe-danger: #c0392b;
-  --pe-danger-soft: #fdf0ee;
-  --pe-ai: #6366f1;
-  --pe-ai-soft: #eef2ff;
-  --pe-radius-sm: 0.5rem;
-  --pe-radius-card: 0.75rem;
-  --pe-radius-xl: 1rem;
-  --pe-shadow-sm: 0 1px 2px rgba(26, 46, 40, 0.04);
-  --pe-shadow-card: 0 1px 3px rgba(26, 46, 40, 0.05), 0 4px 16px rgba(26, 46, 40, 0.04);
-  --pe-shadow-hover: 0 4px 20px rgba(26, 46, 40, 0.08);
+  /* ── Colores base ── */
+  --pe-bg:              #fdf6ec;
+  --pe-surface:         #ffffff;
+  --pe-surface-muted:   #f8f4ef;
+  --pe-border:          rgba(26, 46, 40, 0.08);
+  --pe-border-strong:   rgba(26, 46, 40, 0.14);
+
+  /* ── Texto ── */
+  --pe-ink:             #1a2e28;
+  --pe-muted:           #5f6f6a;
+  --pe-faint:           #9aa8a3;
+
+  /* ── Brand ── */
+  --pe-primary:         #1f5c47;
+  --pe-primary-hover:   #184a39;
+  --pe-primary-soft:    rgba(31, 92, 71, 0.08);
+  --pe-primary-xlight:  #e8f4f0;
+
+  --pe-accent:          #f4a300;
+  --pe-accent-hover:    #e09400;
+  --pe-accent-soft:     #fef8eb;
+
+  /* ── Semánticos — estados de negocio ── */
+  --pe-success:         #1f5c47;       /* verde Poncho — estados SGR, financiamiento */
+  --pe-success-soft:    #eef5f2;
+
+  --pe-success-vivid:       #16a34a;   /* verde semáforo — badges, indicadores live */
+  --pe-success-vivid-soft:  #dcfce7;
+  --pe-success-vivid-ring:  rgba(74, 222, 128, 0.35);
+
+  --pe-warning:         #b45309;
+  --pe-warning-soft:    #fef6eb;
+
+  --pe-danger:          #c0392b;
+  --pe-danger-soft:     #fdf0ee;
+
+  --pe-info:            #2563eb;       /* azul informativo — badges info, estados bancarios */
+  --pe-info-soft:       #eff6ff;
+
+  --pe-ai:              #6366f1;       /* indigo — badges IA, análisis automático */
+  --pe-ai-soft:         #eef2ff;
+
+  --pe-wallet:          #7c3aed;       /* púrpura — Poncho Wallet */
+  --pe-wallet-soft:     rgba(124, 58, 237, 0.08);
+
+  /* ── Sombras (escala completa) ── */
+  --pe-shadow-xs:       0 1px 3px rgba(0, 0, 0, 0.06);
+  --pe-shadow-sm:       0 1px 2px rgba(26, 46, 40, 0.04);
+  --pe-shadow-card:     0 1px 3px rgba(26, 46, 40, 0.05),
+                        0 4px 16px rgba(26, 46, 40, 0.04);
+  --pe-shadow-hover:    0 4px 20px rgba(26, 46, 40, 0.08);
+  --pe-shadow-md:       0 4px 16px rgba(0, 0, 0, 0.09);
+  --pe-shadow-lg:       0 8px 32px rgba(0, 0, 0, 0.11);
+
+  /* ── Radios (escala completa) ── */
+  --pe-radius-sm:       0.5rem;        /* 8px  */
+  --pe-radius-card:     0.75rem;       /* 12px */
+  --pe-radius-lg:       1rem;          /* 16px */
+  --pe-radius-xl:       1.25rem;       /* 20px */
 }
 
+/* ── Tailwind theme mapping ── */
 @theme inline {
-  --color-background: var(--pe-bg);
-  --color-foreground: var(--pe-ink);
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-display);
+  --color-background:       var(--pe-bg);
+  --color-foreground:       var(--pe-ink);
+  --font-sans:              var(--font-sans);
+  --font-display:           var(--font-display);
 
-  --color-bg: var(--pe-bg);
-  --color-surface: var(--pe-surface);
-  --color-surface-muted: var(--pe-surface-muted);
-  --color-border-subtle: var(--pe-border);
-  --color-border-strong: var(--pe-border-strong);
-  --color-ink: var(--pe-ink);
-  --color-muted: var(--pe-muted);
-  --color-faint: var(--pe-faint);
-  --color-primary: var(--pe-primary);
-  --color-primary-hover: var(--pe-primary-hover);
-  --color-primary-soft: var(--pe-primary-soft);
-  --color-accent: var(--pe-accent);
-  --color-accent-hover: var(--pe-accent-hover);
-  --color-accent-soft: var(--pe-accent-soft);
-  --color-success: var(--pe-success);
-  --color-success-soft: var(--pe-success-soft);
-  --color-warning: var(--pe-warning);
-  --color-warning-soft: var(--pe-warning-soft);
-  --color-danger: var(--pe-danger);
-  --color-danger-soft: var(--pe-danger-soft);
-  --color-ai: var(--pe-ai);
-  --color-ai-soft: var(--pe-ai-soft);
+  /* Superficie */
+  --color-bg:               var(--pe-bg);
+  --color-surface:          var(--pe-surface);
+  --color-surface-muted:    var(--pe-surface-muted);
 
-  --radius-sm: var(--pe-radius-sm);
-  --radius-card: var(--pe-radius-card);
-  --radius-xl: var(--pe-radius-xl);
-  --shadow-sm: var(--pe-shadow-sm);
-  --shadow-card: var(--pe-shadow-card);
-  --shadow-hover: var(--pe-shadow-hover);
+  /* Bordes */
+  --color-border-subtle:    var(--pe-border);
+  --color-border-strong:    var(--pe-border-strong);
+
+  /* Texto */
+  --color-ink:              var(--pe-ink);
+  --color-muted:            var(--pe-muted);
+  --color-faint:            var(--pe-faint);
+
+  /* Brand */
+  --color-primary:          var(--pe-primary);
+  --color-primary-hover:    var(--pe-primary-hover);
+  --color-primary-soft:     var(--pe-primary-soft);
+  --color-primary-xlight:   var(--pe-primary-xlight);
+  --color-accent:           var(--pe-accent);
+  --color-accent-hover:     var(--pe-accent-hover);
+  --color-accent-soft:      var(--pe-accent-soft);
+
+  /* Semánticos */
+  --color-success:              var(--pe-success);
+  --color-success-soft:         var(--pe-success-soft);
+  --color-success-vivid:        var(--pe-success-vivid);
+  --color-success-vivid-soft:   var(--pe-success-vivid-soft);
+  --color-warning:              var(--pe-warning);
+  --color-warning-soft:         var(--pe-warning-soft);
+  --color-danger:               var(--pe-danger);
+  --color-danger-soft:          var(--pe-danger-soft);
+  --color-info:                 var(--pe-info);
+  --color-info-soft:            var(--pe-info-soft);
+  --color-ai:                   var(--pe-ai);
+  --color-ai-soft:              var(--pe-ai-soft);
+  --color-wallet:               var(--pe-wallet);
+  --color-wallet-soft:          var(--pe-wallet-soft);
+
+  /* Sombras */
+  --shadow-xs:      var(--pe-shadow-xs);
+  --shadow-sm:      var(--pe-shadow-sm);
+  --shadow-card:    var(--pe-shadow-card);
+  --shadow-hover:   var(--pe-shadow-hover);
+  --shadow-md:      var(--pe-shadow-md);
+  --shadow-lg:      var(--pe-shadow-lg);
+
+  /* Radios */
+  --radius-sm:      var(--pe-radius-sm);
+  --radius-card:    var(--pe-radius-card);
+  --radius-lg:      var(--pe-radius-lg);
+  --radius-xl:      var(--pe-radius-xl);
 }
 
+/* ── Base ── */
 body {
   background: var(--pe-bg);
   color: var(--pe-ink);
-  font-family: var(--font-inter), system-ui, sans-serif;
+  font-family: var(--font-sans), "DM Sans", system-ui, sans-serif;
   font-size: 0.9375rem;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* ── Utilidades tipográficas ── */
 .font-display {
   font-family: var(--font-display), "Poppins", system-ui, sans-serif;
 }
@@ -98,11 +168,51 @@ body {
   color: var(--pe-ink);
 }
 
+/* ── Gradientes de marca reutilizables ── */
+.gradient-primary {
+  background: linear-gradient(135deg, #1a4f3e 0%, #1f5c47 60%, #2d7a5e 100%);
+}
+
+.gradient-wallet {
+  background: linear-gradient(135deg, #7c3aed, #a855f7);
+}
+
+.gradient-ai {
+  background: linear-gradient(135deg, #e8f4f0 0%, #fef8eb 100%);
+}
+
+/* ── Indicador de estado online (dot pulsante) ── */
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-dot-online   { background: var(--pe-success-vivid); box-shadow: 0 0 6px var(--pe-success-vivid); }
+.status-dot-warning  { background: var(--pe-accent); box-shadow: 0 0 6px var(--pe-accent); }
+.status-dot-offline  { background: var(--pe-faint); }
+
+/* ── Progress bar base ── */
+.progress-track {
+  height: 6px;
+  background: var(--pe-border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+/* ── Focus ring ── */
 :focus-visible {
   outline: 2px solid var(--pe-primary);
   outline-offset: 2px;
 }
 
+/* ── Movimiento reducido ── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

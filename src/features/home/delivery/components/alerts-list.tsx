@@ -13,7 +13,7 @@ export function AlertsList({
     <Card padding="md">
       <div className="mb-3 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-ink">Próximos vencimientos</h2>
-        <Link href="/movimientos" className="text-xs font-medium text-primary">
+        <Link href="/operar" className="text-xs font-medium text-primary">
           Ver todo
         </Link>
       </div>

@@ -1,10 +1,14 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useDashboardData } from "@/features/shell/delivery/empresa-provider";
 import { PageShell } from "@/features/shell/delivery/components/page-shell";
-import { cn } from "@/shared/lib/cn";
+import { KpiCard } from "@/shared/ui/kpi-card";
+import { PageHeaderRow } from "@/shared/ui/page-header-row";
+import { SectionHeader } from "@/shared/ui/section-header";
+import { TabBar } from "@/shared/ui/tab-bar";
+import { formatMonto } from "@/shared/lib/format";
 import { AccountsPanel } from "./components/accounts-panel";
 import { DepositForm } from "./components/deposit-form";
 import { MovementsList } from "./components/movements-list";
@@ -35,67 +39,92 @@ export function OperateView({ defaultTab = "movimientos" }: OperateViewProps) {
 
   const setTab = useCallback(
     (id: TabId) => {
-      const routes: Record<TabId, string> = {
-        movimientos: "/movimientos",
-        transferir: "/transferencias",
-        depositar: "/depositos",
-      };
-      router.push(routes[id]);
+      router.push(`/operar?tab=${id}`);
     },
     [router],
   );
 
+  const cuentaOperativa = useMemo(
+    () => data.cuentas.find((c) => c.tipo === "operativa"),
+    [data.cuentas],
+  );
+
+  const ingresosMes = useMemo(
+    () =>
+      data.actividad
+        .filter((a) => !a.esEgreso)
+        .reduce((sum, a) => sum + a.monto, 0),
+    [data.actividad],
+  );
+
+  const egresosMes = useMemo(
+    () =>
+      data.actividad
+        .filter((a) => a.esEgreso)
+        .reduce((sum, a) => sum + a.monto, 0),
+    [data.actividad],
+  );
+
   return (
-    <PageShell
-      usuario={data.usuario}
-      titulo={
-        defaultTab === "transferir"
-          ? "Transferencias"
-          : defaultTab === "depositar"
-            ? "Depósitos"
-            : "Movimientos"
-      }
-      subtitulo="Historial, transferencias y depósitos de tu cuenta operativa."
-      ancho="completo"
-    >
-      <div className="mb-6 flex gap-1 rounded-full border border-border-subtle bg-surface p-1 shadow-sm">
-        {TABS.map((t) => (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => setTab(t.id)}
-            className={cn(
-              "flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors",
-              tab === t.id
-                ? "bg-primary-soft text-primary"
-                : "text-muted hover:text-ink",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
+    <PageShell ancho="completo">
+      <PageHeaderRow
+        titulo="Operar"
+        subtitulo="Movimientos, transferencias y depósitos de tu cuenta Poncho."
+      />
+
+      <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <KpiCard
+          label="Saldo operativo"
+          value={formatMonto(cuentaOperativa?.saldo ?? 0)}
+          change={cuentaOperativa?.detalle ?? "Cuenta principal"}
+          changeColor="muted"
+          accentColor="var(--pe-primary)"
+        />
+        <KpiCard
+          label="Ingresos (mes)"
+          value={formatMonto(ingresosMes)}
+          change={`${data.actividad.filter((a) => !a.esEgreso).length} movimientos`}
+          changeColor="success"
+          accentColor="var(--pe-success-vivid)"
+        />
+        <KpiCard
+          label="Egresos (mes)"
+          value={formatMonto(egresosMes)}
+          change={`${data.actividad.filter((a) => a.esEgreso).length} movimientos`}
+          changeColor="muted"
+          accentColor="var(--pe-warning)"
+        />
+      </div>
+
+      <div className="mb-6">
+        <TabBar tabs={TABS} active={tab} onChange={setTab} />
       </div>
 
       {tab === "movimientos" && (
         <div className="grid gap-6 lg:grid-cols-12">
           <div className="lg:col-span-8">
+            <SectionHeader title="Últimos movimientos" />
             <MovementsList items={data.actividad} />
           </div>
           <div className="lg:col-span-4">
+            <SectionHeader title="Tus cuentas" />
             <AccountsPanel cuentas={data.cuentas} />
           </div>
         </div>
       )}
+
       {tab === "transferir" && (
         <div className="grid gap-6 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <TransferForm cuentas={data.cuentas} />
           </div>
           <div className="lg:col-span-5">
+            <SectionHeader title="Cuentas disponibles" />
             <AccountsPanel cuentas={data.cuentas} />
           </div>
         </div>
       )}
+
       {tab === "depositar" && (
         <div className="max-w-xl">
           <DepositForm />

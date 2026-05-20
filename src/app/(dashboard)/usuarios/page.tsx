@@ -1,10 +1,5 @@
-import { PlaceholderPageView } from "@/features/shell/delivery/placeholder-page-view";
+import { UsuariosView } from "@/features/shell/delivery/usuarios-view";
 
 export default function UsuariosPage() {
-  return (
-    <PlaceholderPageView
-      titulo="Usuarios"
-      descripcion="Roles y permisos del equipo."
-    />
-  );
+  return <UsuariosView />;
 }

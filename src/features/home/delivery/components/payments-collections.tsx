@@ -14,7 +14,7 @@ export function PaymentsCard({ pagos }: { pagos: Vencimiento[] }) {
 
   return (
     <DashboardCard>
-      <SectionHeader title="Próximos pagos" href="/movimientos" />
+      <SectionHeader title="Próximos pagos" href="/operar" />
       <DashboardCardBody>
         <ul className="flex min-h-[8.5rem] flex-col justify-start gap-2">
           {items.map((p) => (
@@ -46,7 +46,7 @@ export function CollectionsCard({ cobros }: { cobros: FacturaPorCobrar[] }) {
 
   return (
     <DashboardCard>
-      <SectionHeader title="Por cobrar" href="/movimientos" />
+      <SectionHeader title="Por cobrar" href="/operar" />
       <DashboardCardBody>
         <ul className="flex min-h-[8.5rem] flex-col justify-start gap-2">
           {items.map((f) => (

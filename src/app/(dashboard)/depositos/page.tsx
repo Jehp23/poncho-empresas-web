@@ -1,10 +1,5 @@
-import { Suspense } from "react";
-import { OperateView } from "@/features/operations/delivery/operate-view";
+import { redirect } from "next/navigation";
 
 export default function DepositosPage() {
-  return (
-    <Suspense fallback={null}>
-      <OperateView defaultTab="depositar" />
-    </Suspense>
-  );
+  redirect("/operar?tab=depositar");
 }

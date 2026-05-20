@@ -94,9 +94,9 @@ export function FinancingCard({ data }: { data: FinanciamientoResumen }) {
       </DashboardCardBody>
       <DashboardCardFooter>
         <Link href={wizardHref} className="block">
-          <Button variant="accent" className="w-full">
+          <Button variant="secondary" className="w-full">
             <Landmark className="h-4 w-4" />
-            Iniciar solicitud
+            {data.estado === "no_iniciado" ? "Iniciar solicitud" : "Continuar carpeta"}
             <ChevronRight className="h-4 w-4" />
           </Button>
         </Link>

@@ -18,7 +18,7 @@ const iconMap = {
 export function AccountsSummary({ cuentas }: { cuentas: Cuenta[] }) {
   return (
     <DashboardCard>
-      <SectionHeader title="Cuentas" href="/movimientos" linkLabel="Ver todas" />
+      <SectionHeader title="Cuentas" href="/operar" linkLabel="Ver todas" />
       <DashboardCardBody>
         <ul className="flex flex-col gap-0.5">
           {cuentas.map((cuenta) => {

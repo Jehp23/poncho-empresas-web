@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Brain, Upload } from "lucide-react";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
+import { SectionHeader } from "@/shared/ui/section-header";
 import {
   DashboardCard,
   DashboardCardBody,
@@ -13,12 +14,12 @@ export function ConsolidationCard() {
     <DashboardCard>
       <div className="mb-4 flex min-w-0 items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
-          <h2 className="truncate text-section-title">Consolidación bancaria</h2>
-          <Badge className="shrink-0 bg-ai-soft text-ai ring-ai/20">IA</Badge>
+          <SectionHeader title="Consolidación bancaria" className="mb-0" />
+          <Badge variant="ai">IA</Badge>
         </div>
         <Link
           href="/consolidacion"
-          className="shrink-0 whitespace-nowrap text-xs font-medium text-primary hover:underline"
+          className="shrink-0 whitespace-nowrap text-xs font-medium text-primary hover:text-primary-hover"
         >
           Abrir
         </Link>
@@ -38,10 +39,10 @@ export function ConsolidationCard() {
       <div className="mt-4 flex min-w-0 items-center justify-between gap-2 rounded-lg bg-surface-muted px-3 py-2 text-xs">
         <span className="flex min-w-0 items-center gap-1.5 truncate text-muted">
           <Brain className="h-3.5 w-3.5 shrink-0 text-ai" />
-          Última importación
+          Última importación · Galicia Mayo
         </span>
-        <Badge variant="success" className="shrink-0">
-          Conciliado por IA
+        <Badge variant="success-vivid" className="shrink-0">
+          Conciliado
         </Badge>
       </div>
       <DashboardCardFooter>

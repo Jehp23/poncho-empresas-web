@@ -1,10 +1,5 @@
-import { Suspense } from "react";
-import { OperateView } from "@/features/operations/delivery/operate-view";
+import { redirect } from "next/navigation";
 
 export default function MovimientosPage() {
-  return (
-    <Suspense fallback={null}>
-      <OperateView defaultTab="movimientos" />
-    </Suspense>
-  );
+  redirect("/operar?tab=movimientos");
 }

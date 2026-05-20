@@ -16,7 +16,7 @@ export function FinancingStrip({ data }: { data: FinanciamientoResumen }) {
     <Link href="/financiamiento" className="block">
       <Card
         padding="md"
-        className="transition-shadow hover:shadow-card-hover"
+        className="transition-shadow hover:shadow-hover"
       >
         <div className="flex items-center gap-3">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-accent-soft font-display text-lg font-bold text-amber-900">

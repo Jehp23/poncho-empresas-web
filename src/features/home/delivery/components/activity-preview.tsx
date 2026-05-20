@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useMemo, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowLeftRight,
@@ -7,6 +10,7 @@ import {
 } from "lucide-react";
 import type { ActividadReciente, EstadoActividad } from "@/shared/types/app";
 import { Badge } from "@/shared/ui/badge";
+import { FilterChips } from "@/shared/ui/filter-chips";
 import { IconBox } from "@/shared/ui/icon-box";
 import { SectionHeader } from "@/shared/ui/section-header";
 import { DashboardCard } from "@/shared/ui/dashboard-card";
@@ -31,19 +35,21 @@ const estadoVariant: Record<
 };
 
 const estadoLabel: Record<EstadoActividad, string> = {
-  completado: "Completed",
-  pendiente: "Pending",
-  en_revision: "In review",
-  requiere_atencion: "Needs attention",
+  completado: "Completado",
+  pendiente: "Pendiente",
+  en_revision: "En revisión",
+  requiere_atencion: "Requiere atención",
 };
 
 const FILTERS = [
-  { id: "all", label: "Todos" },
+  { id: "all", label: "Todas" },
   { id: "transferencia", label: "Transferencias" },
-  { id: "deposito", label: "Depósitos" },
   { id: "echeq", label: "eCheqs" },
   { id: "inversion", label: "Inversiones" },
+  { id: "deposito", label: "Depósitos" },
 ] as const;
+
+type FilterId = (typeof FILTERS)[number]["id"];
 
 export function ActivityPreview({
   items,
@@ -52,73 +58,76 @@ export function ActivityPreview({
   items: ActividadReciente[];
   limit?: number;
 }) {
+  const [filtro, setFiltro] = useState<FilterId>("all");
+
+  const filtered = useMemo(() => {
+    if (filtro === "all") return items;
+    return items.filter((item) => item.tipo === filtro);
+  }, [items, filtro]);
+
+  const visible = filtered.slice(0, limit);
+
   return (
     <DashboardCard padding="none" className="overflow-hidden">
       <div className="border-b border-border-subtle px-5 py-4 sm:px-6">
         <SectionHeader
           title="Actividad reciente"
-          href="/movimientos"
+          href="/operar"
           linkLabel="Ver historial"
           className="mb-3"
         />
-        <div className="flex gap-2 overflow-x-auto pb-0.5">
-          {FILTERS.map((f, i) => (
-            <span
-              key={f.id}
-              className={cn(
-                "shrink-0 rounded-full px-3 py-1 text-xs font-medium",
-                i === 0
-                  ? "bg-primary-soft text-primary"
-                  : "bg-surface-muted text-muted",
-              )}
-            >
-              {f.label}
-            </span>
-          ))}
-        </div>
+        <FilterChips items={FILTERS} active={filtro} onChange={setFiltro} />
       </div>
-      <ul className="min-w-0">
-        {items.slice(0, limit).map((item, i) => {
-          const cfg = tipoConfig[item.tipo];
-          return (
-            <li
-              key={item.id}
-              className={cn(
-                "flex min-w-0 items-center gap-3 px-5 py-4 sm:gap-4 sm:px-6",
-                i > 0 && "border-t border-border-subtle",
-              )}
-            >
-              <IconBox icon={cfg.icon} size="sm" />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">
-                  {item.descripcion}
-                </p>
-                <p className="truncate text-xs text-faint">
-                  {cfg.label} · {item.fecha}
-                </p>
-              </div>
-              <div className="flex w-[5.5rem] shrink-0 flex-col items-end gap-1 sm:w-auto">
-                <p
-                  className={cn(
-                    "max-w-full truncate text-xs font-semibold tabular-nums sm:text-sm",
-                    item.esEgreso ? "text-ink" : "text-success",
-                  )}
-                >
-                  {item.esEgreso ? "−" : "+"}
-                  {formatMonto(item.monto)}
-                </p>
-                <Badge variant={estadoVariant[item.estado]} className="max-w-full truncate">
-                  {estadoLabel[item.estado]}
-                </Badge>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-      {items.length > limit && (
+
+      {visible.length === 0 ? (
+        <p className="px-5 py-8 text-center text-sm text-muted sm:px-6">
+          No hay movimientos en esta categoría.
+        </p>
+      ) : (
+        <ul className="min-w-0">
+          {visible.map((item, i) => {
+            const cfg = tipoConfig[item.tipo];
+            return (
+              <li
+                key={item.id}
+                className={cn(
+                  "flex min-w-0 items-center gap-3 px-5 py-4 sm:gap-4 sm:px-6",
+                  i > 0 && "border-t border-border-subtle",
+                )}
+              >
+                <IconBox icon={cfg.icon} size="sm" />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-ink">
+                    {item.descripcion}
+                  </p>
+                  <p className="truncate text-xs text-faint">
+                    {cfg.label} · {item.fecha}
+                  </p>
+                </div>
+                <div className="flex w-[5.5rem] shrink-0 flex-col items-end gap-1 sm:w-auto">
+                  <p
+                    className={cn(
+                      "max-w-full truncate text-xs font-semibold tabular-nums sm:text-sm",
+                      item.esEgreso ? "text-ink" : "text-success",
+                    )}
+                  >
+                    {item.esEgreso ? "−" : "+"}
+                    {formatMonto(item.monto)}
+                  </p>
+                  <Badge variant={estadoVariant[item.estado]} className="max-w-full truncate">
+                    {estadoLabel[item.estado]}
+                  </Badge>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {filtered.length > limit && (
         <div className="border-t border-border-subtle px-5 py-3 sm:px-6">
           <Link
-            href="/movimientos"
+            href="/operar"
             className="text-sm font-medium text-primary hover:underline"
           >
             Ver toda la actividad

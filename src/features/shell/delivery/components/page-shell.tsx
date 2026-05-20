@@ -1,19 +1,15 @@
-"use client";
-
-import type { Usuario } from "@/shared/types/app";
+import type { ReactNode } from "react";
 import { cn } from "@/shared/lib/cn";
-import { PageHeader } from "./page-header";
 
 type PageShellProps = {
-  usuario: Usuario;
-  children: React.ReactNode;
+  children: ReactNode;
+  /** Preferir PageHeaderRow dentro de children para páneas dashboard/lista */
   titulo?: string;
   subtitulo?: string;
   ancho?: "estrecho" | "completo";
 };
 
 export function PageShell({
-  usuario,
   children,
   titulo,
   subtitulo,
@@ -22,11 +18,22 @@ export function PageShell({
   return (
     <main
       className={cn(
-        "mx-auto w-full flex-1 px-4 py-6 pb-16 sm:px-8 lg:px-10",
-        ancho === "completo" ? "max-w-[72rem]" : "max-w-3xl",
+        "mx-auto w-full flex-1 px-6 py-7 pb-24 lg:px-10 lg:pb-16",
+        ancho === "completo" ? "max-w-[76rem]" : "max-w-3xl",
       )}
     >
-      <PageHeader usuario={usuario} titulo={titulo} subtitulo={subtitulo} />
+      {(titulo || subtitulo) && (
+        <div className="mb-6">
+          {titulo && (
+            <h1 className="font-display text-[22px] font-semibold tracking-tight text-ink">
+              {titulo}
+            </h1>
+          )}
+          {subtitulo && (
+            <p className="mt-1 text-sm text-muted">{subtitulo}</p>
+          )}
+        </div>
+      )}
       {children}
     </main>
   );
