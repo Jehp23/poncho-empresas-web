@@ -1,27 +1,30 @@
 "use client";
 
 import { Building2, Check } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AuthShell } from "./components/auth-shell";
-import {
-  EMPRESA_STORAGE_KEY,
-  SESSION_STORAGE_KEY,
-} from "@/features/shell/domain/empresa-context";
+import { startDemoSession } from "@/features/auth/domain/start-demo-session";
+import { EMPRESA_STORAGE_KEY } from "@/features/shell/domain/empresa-context";
 import { MOCK_EMPRESAS } from "@/shared/infrastructure/mock";
 import { cn } from "@/shared/lib/cn";
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 
 export function OnboardingView() {
-  const router = useRouter();
   const [selected, setSelected] = useState(MOCK_EMPRESAS[0].id);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function continuar() {
-    localStorage.setItem(SESSION_STORAGE_KEY, "demo");
+  async function continuar() {
+    setLoading(true);
+    setError(null);
     localStorage.setItem(EMPRESA_STORAGE_KEY, selected);
-    document.cookie = "pe:session=demo; path=/; max-age=86400; SameSite=Lax";
-    router.push("/inicio");
+    try {
+      await startDemoSession("/inicio");
+    } catch {
+      setError("No se pudo continuar. Intentá de nuevo.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -33,6 +36,12 @@ export function OnboardingView() {
         <p className="mt-2 text-sm text-muted">
           Seleccioná con cuál querés operar en esta sesión demo.
         </p>
+
+        {error && (
+          <p className="mt-4 rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger">
+            {error}
+          </p>
+        )}
 
         <ul className="mt-6 space-y-2">
           {MOCK_EMPRESAS.map((empresa) => {
@@ -68,8 +77,8 @@ export function OnboardingView() {
           })}
         </ul>
 
-        <Button className="mt-6 w-full" onClick={continuar}>
-          Continuar al dashboard
+        <Button className="mt-6 w-full" onClick={continuar} disabled={loading}>
+          {loading ? "Cargando dashboard…" : "Continuar al dashboard"}
         </Button>
       </Card>
     </AuthShell>

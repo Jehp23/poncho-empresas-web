@@ -2,7 +2,7 @@
 
 import { LogOut, Menu, Settings, X } from "lucide-react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   USER_MENU_ITEMS,
@@ -13,7 +13,7 @@ import {
   canManageUsuarios,
   getNavItemsForRole,
 } from "@/features/shell/domain/roles";
-import { SESSION_STORAGE_KEY } from "@/features/shell/domain/empresa-context";
+import { endDemoSession } from "@/features/auth/domain/start-demo-session";
 import { cn } from "@/shared/lib/cn";
 import { useEmpresa } from "@/features/shell/delivery/empresa-provider";
 import { ConnectionBanner } from "./connection-banner";
@@ -144,7 +144,6 @@ function NavLink({
 
 function UserCard({ onNavigate }: { onNavigate?: () => void }) {
   const { data } = useEmpresa();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const rol = data.usuario.rol;
@@ -170,9 +169,7 @@ function UserCard({ onNavigate }: { onNavigate?: () => void }) {
   }, []);
 
   function cerrarSesion() {
-    localStorage.removeItem(SESSION_STORAGE_KEY);
-    document.cookie = "pe:session=; path=/; max-age=0";
-    router.push("/login");
+    endDemoSession();
     onNavigate?.();
   }
 

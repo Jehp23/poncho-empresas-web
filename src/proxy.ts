@@ -1,17 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSessionFromCookies } from "@/features/auth/domain/session-cookie";
 
-const PUBLIC_PATHS = ["/login", "/onboarding", "/_next", "/favicon"];
+const PUBLIC_PATHS = ["/login", "/onboarding", "/api/auth", "/_next", "/favicon"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Rutas públicas siempre permitidas
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
   }
 
-  // Rutas del dashboard requieren sesión
-  const session = request.cookies.get("pe:session")?.value;
+  const session = getSessionFromCookies(request.cookies);
   if (!session) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
@@ -22,10 +21,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Aplica a todas las rutas excepto archivos estáticos y api de Next.js.
-     */
-    "/((?!_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
 };

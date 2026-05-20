@@ -1,26 +1,46 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
 import { AuthShell } from "./components/auth-shell";
-import { SESSION_STORAGE_KEY } from "@/features/shell/domain/empresa-context";
+import { startDemoSession } from "@/features/auth/domain/start-demo-session";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Card } from "@/shared/ui/card";
 
 export function LoginView() {
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  function entrar() {
-    localStorage.setItem(SESSION_STORAGE_KEY, "demo");
-    document.cookie = "pe:session=demo; path=/; max-age=86400; SameSite=Lax";
-    router.push("/onboarding");
+  const redirect = searchParams.get("redirect");
+  const destinoInicio =
+    redirect && redirect.startsWith("/") && !redirect.startsWith("/login")
+      ? redirect
+      : "/inicio";
+
+  async function entrar() {
+    setLoading(true);
+    setError(null);
+    try {
+      await startDemoSession("/onboarding");
+    } catch {
+      setError("No se pudo iniciar sesión. Intentá de nuevo.");
+      setLoading(false);
+    }
   }
 
-  function saltear() {
-    document.cookie = "pe:session=demo; path=/; max-age=86400; SameSite=Lax";
-    router.push("/inicio");
+  async function saltear() {
+    setLoading(true);
+    setError(null);
+    try {
+      await startDemoSession(destinoInicio);
+    } catch {
+      setError("No se pudo iniciar sesión. Intentá de nuevo.");
+      setLoading(false);
+    }
   }
 
   return (
@@ -36,15 +56,22 @@ export function LoginView() {
           Explorá la plataforma con datos de ejemplo. Sin registro ni tarjeta.
         </p>
 
+        {error && (
+          <p className="mt-4 rounded-lg bg-danger-soft px-3 py-2 text-sm text-danger">
+            {error}
+          </p>
+        )}
+
         <div className="mt-6 space-y-3">
-          <Button className="w-full" onClick={entrar}>
-            Ingresar a la demo
-            <ArrowRight className="h-4 w-4" />
+          <Button className="w-full" onClick={entrar} disabled={loading}>
+            {loading ? "Ingresando…" : "Ingresar a la demo"}
+            {!loading && <ArrowRight className="h-4 w-4" />}
           </Button>
           <button
             type="button"
             onClick={saltear}
-            className="w-full text-center text-sm text-muted underline-offset-2 transition-colors hover:text-ink hover:underline"
+            disabled={loading}
+            className="w-full text-center text-sm text-muted underline-offset-2 transition-colors hover:text-ink hover:underline disabled:opacity-50"
           >
             Entrar sin onboarding
           </button>

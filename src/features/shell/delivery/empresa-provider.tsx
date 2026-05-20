@@ -42,6 +42,12 @@ export function EmpresaProvider({ children }: { children: React.ReactNode }) {
     if (!USE_REAL_API) return;
     setApiLoading(true);
     setApiDegraded(false);
+
+    const timeout = setTimeout(() => {
+      setApiLoading(false);
+      setApiDegraded(true);
+    }, 8000);
+
     getDashboardDataFromApi(empresaId)
       .then((data) => {
         setApiData(data);
@@ -53,7 +59,10 @@ export function EmpresaProvider({ children }: { children: React.ReactNode }) {
         setApiDegraded(true);
         setBannerDismissed(false);
       })
-      .finally(() => setApiLoading(false));
+      .finally(() => {
+        clearTimeout(timeout);
+        setApiLoading(false);
+      });
   }, [empresaId]);
 
   useEffect(() => {
@@ -127,7 +136,7 @@ export function EmpresaProvider({ children }: { children: React.ReactNode }) {
     fetchApi,
   ]);
 
-  if (USE_REAL_API && apiLoading && !apiData && !simulateOffline) {
+  if (USE_REAL_API && apiLoading && !apiData && !simulateOffline && !apiDegraded) {
     return <DashboardLoading />;
   }
 

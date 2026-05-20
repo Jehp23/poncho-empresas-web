@@ -21,5 +21,7 @@ export interface EmpresaContextValue {
 
 export const EMPRESA_STORAGE_KEY = "pe:empresaId";
 export const SESSION_STORAGE_KEY = "pe:session";
+/** Cookie httpOnly leída por proxy — sin caracteres especiales */
+export const SESSION_COOKIE_NAME = "pe_session";
 
 export type { RolUsuario };
